@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Transition Gap · Practitioner Kit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:           #FAF8F4;
+      --bg-alt:       #F2EDE4;
+      --bg-dark:      #1C1714;
+      --text:         #2A2320;
+      --text-mid:     #5A4E48;
+      --text-light:   #8A7A72;
+      --accent:       #B8743E;
+      --accent-pale:  #E8C9A8;
+      --sage:         #5E7D6E;
+      --border:       #E2D9D0;
+      --card:         #FFFFFF;
+      --red-soft:     #A85050;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.72;
+      font-size: 16px;
+    }
+
+    /* ─── NAV ─────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg-dark);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav-inner {
+      max-width: 1080px; margin: 0 auto;
+      padding: 0 2rem;
+      height: 54px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-size: 0.95rem;
+      color: var(--accent-pale); text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none; font-size: 0.75rem;
+      font-weight: 400; letter-spacing: 0.09em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent-pale); }
+    .nav-print {
+      color: rgba(255,255,255,0.35); font-size: 0.75rem;
+      background: none; border: 1px solid rgba(255,255,255,0.15);
+      padding: 0.3rem 0.75rem; cursor: pointer;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      transition: all 0.2s; font-family: inherit;
+    }
+    .nav-print:hover { border-color: var(--accent-pale); color: var(--accent-pale); }
+
+    /* ─── HERO ────────────────────────────────────────── */
+    .hero {
+      background: var(--bg-dark);
+      padding: 6rem 2rem 5.5rem;
+      position: relative; overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 75% 40%, rgba(184,116,62,0.13) 0%, transparent 60%),
+        radial-gradient(ellipse at 20% 80%, rgba(94,125,110,0.07) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
+    .hero-eyebrow {
+      color: var(--accent); font-size: 0.72rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      font-weight: 500; margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.6rem, 5.5vw, 3.8rem);
+      font-weight: 400; line-height: 1.13;
+      color: #FDFAF6; margin-bottom: 1.5rem;
+    }
+    .hero h1 em { color: var(--accent-pale); font-style: italic; }
+    .hero-sub {
+      color: rgba(255,255,255,0.55);
+      font-size: 1.05rem; line-height: 1.7;
+      max-width: 560px; margin-bottom: 2.5rem;
+    }
+    .hero-ctas { display: flex; gap: 0.875rem; flex-wrap: wrap; }
+    .btn-solid {
+      background: var(--accent); color: #fff;
+      text-decoration: none; padding: 0.7rem 1.5rem;
+      font-size: 0.82rem; font-weight: 500; letter-spacing: 0.03em;
+      border-radius: 2px; transition: background 0.2s;
+    }
+    .btn-solid:hover { background: #9C6234; }
+    .btn-outline {
+      border: 1px solid rgba(255,255,255,0.22); color: rgba(255,255,255,0.6);
+      text-decoration: none; padding: 0.7rem 1.5rem;
+      font-size: 0.82rem; font-weight: 300; letter-spacing: 0.03em;
+      border-radius: 2px; transition: all 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--accent-pale); color: var(--accent-pale); }
+
+    /* ─── INTRO STRIP ─────────────────────────────────── */
+    .intro-strip {
+      background: var(--bg-alt);
+      border-bottom: 1px solid var(--border);
+      padding: 2.75rem 2rem;
+    }
+    .intro-strip-inner { max-width: 1080px; margin: 0 auto; }
+    .intro-strip-label {
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-light); margin-bottom: 1.25rem;
+    }
+    .who-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+    }
+    .who-card {
+      background: var(--card); padding: 1.4rem 1.6rem;
+      border-left: 3px solid var(--accent);
+    }
+    .who-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem;
+    }
+    .who-card p { font-size: 0.845rem; color: var(--text-mid); line-height: 1.6; }
+
+    /* ─── SECTION SHELL ───────────────────────────────── */
+    .section-shell { padding: 5rem 2rem; }
+    .section-shell.alt { background: var(--bg-alt); }
+    .section-inner { max-width: 1080px; margin: 0 auto; }
+
+    .section-tag {
+      display: inline-flex; align-items: center;
+      gap: 0.4rem;
+      background: var(--bg-dark); color: var(--accent-pale);
+      font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.13em; text-transform: uppercase;
+      padding: 0.3rem 0.75rem; border-radius: 2px;
+      margin-bottom: 1.75rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.75rem, 3.5vw, 2.35rem);
+      font-weight: 400; line-height: 1.22;
+      margin-bottom: 0.75rem;
+    }
+    .section-intro {
+      color: var(--text-mid); font-size: 0.96rem;
+      max-width: 600px; line-height: 1.72;
+      margin-bottom: 3rem;
+    }
+
+    /* ─── TOOL GRID ───────────────────────────────────── */
+    .tool-grid { display: grid; gap: 2rem; }
+    .tool-grid.two-up {
+      grid-template-columns: repeat(auto-fit, minmax(430px, 1fr));
+    }
+
+    /* ─── TOOL CARD ───────────────────────────────────── */
+    .tool-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      display: flex; flex-direction: column;
+    }
+    .tool-card-head {
+      padding: 1.75rem 2rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between;
+      align-items: flex-start; gap: 1rem;
+    }
+    .tool-id {
+      font-size: 0.68rem; color: var(--accent);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .tool-card-head h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; font-weight: 700; line-height: 1.3;
+    }
+    .tool-card-head p {
+      font-size: 0.845rem; color: var(--text-mid);
+      margin-top: 0.4rem; line-height: 1.55;
+    }
+    .dl-btn {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      border: 1px solid var(--accent); color: var(--accent);
+      text-decoration: none; font-size: 0.72rem;
+      font-weight: 500; letter-spacing: 0.05em;
+      padding: 0.45rem 0.9rem; border-radius: 2px;
+      white-space: nowrap; flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .dl-btn:hover { background: var(--accent); color: #fff; }
+
+    .tool-card-body { padding: 1.75rem 2rem; flex: 1; }
+
+    /* ─── CONTENT ELEMENTS ────────────────────────────── */
+    .subhead {
+      font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.11em; text-transform: uppercase;
+      color: var(--text-light);
+      margin-top: 1.5rem; margin-bottom: 0.9rem;
+    }
+    .subhead:first-child { margin-top: 0; }
+
+    .prose { font-size: 0.88rem; color: var(--text); line-height: 1.72; margin-bottom: 0.8rem; }
+    .prose:last-child { margin-bottom: 0; }
+
+    .callout {
+      border-left: 3px solid var(--accent);
+      background: var(--bg);
+      padding: 0.85rem 1.2rem; margin: 1.25rem 0;
+    }
+    .callout p {
+      font-size: 0.845rem; font-style: italic;
+      color: var(--text-mid); line-height: 1.65;
+    }
+
+    .do-list, .avoid-list { list-style: none; }
+    .do-list li, .avoid-list li {
+      font-size: 0.875rem; line-height: 1.6;
+      padding: 0.35rem 0 0.35rem 1.6rem;
+      position: relative; color: var(--text);
+      border-bottom: 1px solid var(--border);
+    }
+    .do-list li:last-child, .avoid-list li:last-child { border-bottom: none; }
+    .do-list li::before {
+      content: '✓'; position: absolute; left: 0;
+      color: var(--sage); font-size: 0.8rem; top: 0.42rem;
+    }
+    .avoid-list li::before {
+      content: '✗'; position: absolute; left: 0;
+      color: var(--red-soft); font-size: 0.8rem; top: 0.42rem;
+    }
+    .avoid-list li span.note {
+      display: block; font-size: 0.77rem;
+      color: var(--text-light); font-style: italic;
+    }
+
+    .q-list { list-style: none; }
+    .q-item {
+      display: flex; gap: 1rem; align-items: flex-start;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .q-item:last-child { border-bottom: none; }
+    .q-num {
+      font-family: 'Playfair Display', serif;
+      color: var(--accent); font-size: 0.85rem;
+      font-weight: 700; flex-shrink: 0;
+      min-width: 1.5rem; padding-top: 0.05rem;
+    }
+    .q-body { flex: 1; }
+    .q-text { font-size: 0.88rem; line-height: 1.62; color: var(--text); }
+    .q-note {
+      font-size: 0.77rem; color: var(--text-light);
+      font-style: italic; margin-top: 0.2rem; line-height: 1.5;
+    }
+
+    .arrow-item {
+      display: flex; gap: 0.75rem; align-items: flex-start;
+      padding: 0.65rem 0; border-bottom: 1px solid var(--border);
+    }
+    .arrow-item:last-child { border-bottom: none; }
+    .arrow-item::before {
+      content: '→'; color: var(--accent);
+      font-size: 0.85rem; flex-shrink: 0; padding-top: 0.05rem;
+    }
+    .arrow-item p { font-size: 0.88rem; line-height: 1.6; color: var(--text); }
+
+    /* ─── ABOUT ───────────────────────────────────────── */
+    .about-block { max-width: 680px; padding: 4.5rem 2rem 5rem; margin: 0 auto; }
+    .about-block h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.55rem; font-weight: 400; margin-bottom: 1.25rem;
+    }
+    .about-block p {
+      font-size: 0.92rem; color: var(--text-mid);
+      line-height: 1.78; margin-bottom: 1rem;
+    }
+    .about-block p:last-child { margin-bottom: 0; }
+    .about-block strong { color: var(--text); font-weight: 500; }
+
+    /* ─── FOOTER ──────────────────────────────────────── */
+    footer {
+      background: var(--bg-dark);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 2.25rem 2rem;
+    }
+    .footer-inner {
+      max-width: 1080px; margin: 0 auto;
+      display: flex; justify-content: space-between;
+      align-items: center; gap: 1rem; flex-wrap: wrap;
+    }
+    .footer-inner p { color: rgba(255,255,255,0.3); font-size: 0.78rem; }
+    .footer-inner a {
+      color: var(--accent-pale); text-decoration: none;
+      font-size: 0.78rem; opacity: 0.75; transition: opacity 0.2s;
+    }
+    .footer-inner a:hover { opacity: 1; }
+
+    /* ─── RESPONSIVE ──────────────────────────────────── */
+    @media (max-width: 780px) {
+      .nav-links, .nav-print { display: none; }
+      .tool-grid.two-up { grid-template-columns: 1fr; }
+      .tool-card-head { flex-direction: column; }
+      .hero { padding: 4rem 1.5rem 3.5rem; }
+      .section-shell { padding: 3.5rem 1.5rem; }
+    }
+
+    @media print {
+      nav, .hero-ctas, .dl-btn, footer { display: none; }
+      .section-shell { padding: 2rem 0; }
+      .tool-card { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ──────────────────────────────────────────────── -->
+<nav>
+  <div class="nav-inner">
+    <a href="#top" class="nav-logo">The Transition Gap</a>
+    <ul class="nav-links">
+      <li><a href="#for-hr">For HR</a></li>
+      <li><a href="#for-coaches">For Coaches</a></li>
+      <li><a href="#for-individuals">For Individuals</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+    <button class="nav-print" onclick="window.print()">⎙ Print</button>
+  </div>
+</nav>
+
+<!-- ── HERO ─────────────────────────────────────────────── -->
+<section class="hero" id="top">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Practitioner Kit · Companion to the HRMOutlook Article</p>
+    <h1>The Transition Gap<br><em>A Practitioner Kit</em></h1>
+    <p class="hero-sub">Resources for the space between job loss and job search — for HR professionals, career coaches, and individuals navigating outplacement.</p>
+    <div class="hero-ctas">
+      <a href="[ARTICLE LINK]" class="btn-solid" target="_blank">↗ Read the Article</a>
+      <a href="#for-hr" class="btn-outline">Explore the Kit ↓</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHO THIS IS FOR ───────────────────────────────────── -->
+<div class="intro-strip">
+  <div class="intro-strip-inner">
+    <p class="intro-strip-label">Who this kit is for</p>
+    <div class="who-grid">
+      <div class="who-card">
+        <h4>HR Professionals &amp; Managers</h4>
+        <p>Tools for the first conversation after separation and for evaluating whether your outplacement provider is addressing the full transition.</p>
+      </div>
+      <div class="who-card">
+        <h4>Career Coaches &amp; Practitioners</h4>
+        <p>Questions for the moments when a client has all the tools but isn't moving — focused on identity, not tactics.</p>
+      </div>
+      <div class="who-card">
+        <h4>Individuals in Transition</h4>
+        <p>Reflection guides for the days before the job search begins — to help you understand where you are and what you're carrying.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- ── FOR HR PROFESSIONALS ─────────────────────────────── -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="section-shell alt" id="for-hr">
+  <div class="section-inner">
+    <div class="section-tag">For HR Professionals &amp; Managers</div>
+    <h2 class="section-title">Before the Resume Work Starts</h2>
+    <p class="section-intro">The moments immediately following separation set the tone for everything that follows. These tools help you show up with both honesty and dignity — and ask better questions of your outplacement providers.</p>
+
+    <div class="tool-grid two-up">
+
+      <!-- ── TOOL 01 ──────────────────────────────── -->
+      <div class="tool-card">
+        <div class="tool-card-head">
+          <div>
+            <p class="tool-id">Tool 01</p>
+            <h3>The First Conversation Guide</h3>
+            <p>What to say — and what to avoid — in the notification meeting and the day-two follow-up.</p>
+          </div>
+          <a href="https://drive.google.com/file/d/1nbJxAoH2ZHrRtV6lIOyfc9wu-W40MiLz/view?usp=drive_link" class="dl-btn" target="_blank">↓ PDF</a>
+        </div>
+        <div class="tool-card-body">
+
+          <p class="prose">Most managers have never been taught how to do this well. The goal is clarity and dignity — not comfort, efficiency, or closure on your timeline.</p>
+
+          <div class="callout">
+            <p>"This conversation won't feel complete. It shouldn't. Your job isn't to make this okay — it's to be honest and present."</p>
+          </div>
+
+          <p class="subhead">The Notification Conversation — What Helps</p>
+          <ul class="do-list">
+            <li>Be direct. State clearly that the position is being eliminated before explaining why.</li>
+            <li>Acknowledge the weight of the moment before moving to logistics.</li>
+            <li>Ask: "What questions can I answer for you right now?" — then actually wait.</li>
+            <li>Give them time. Silence is not a problem to be solved.</li>
+            <li>Be clear about what you know and honest about what you don't.</li>
+          </ul>
+
+          <p class="subhead" style="margin-top:1.5rem;">What Makes It Worse</p>
+          <ul class="avoid-list">
+            <li>"You'll land on your feet." <span class="note">It minimizes what's happening right now.</span></li>
+            <li>"At least you have severance." <span class="note">Same problem.</span></li>
+            <li>Rushing to next steps before the person has absorbed the news.</li>
+            <li>Over-explaining the business rationale to manage your own discomfort.</li>
+            <li>"We can still be connected on LinkedIn." <span class="note">Not the moment.</span></li>
+          </ul>
+
+          <p class="subhead" style="margin-top:1.5rem;">The Day-Two Follow-Up</p>
+          <p class="prose">A brief check-in the day after notification is more valuable than it might seem. These three work:</p>
+
+          <div class="arrow-item"><p>"I wanted to check in — is there anything that would be helpful from me in the next few days?"</p></div>
+          <div class="arrow-item"><p>"What's feeling most uncertain right now?"</p></div>
+          <div class="arrow-item"><p>"I want to be honest with you about what I know and what I'm still finding out."</p></div>
+
+        </div>
+      </div>
+
+      <!-- ── TOOL 02 ──────────────────────────────── -->
+      <div class="tool-card">
+        <div class="tool-card-head">
+          <div>
+            <p class="tool-id">Tool 02</p>
+            <h3>Vendor Evaluation Guide</h3>
+            <p>Seven questions that reveal whether an outplacement provider understands the full human transition — not just the job search.</p>
+          </div>
+          <a href="https://drive.google.com/file/d/15xNjpht_9IjfrL-VSPWPxuzpAGUvdzy2/view?usp=drive_link" class="dl-btn" target="_blank">↓ PDF</a>
+        </div>
+        <div class="tool-card-body">
+
+          <p class="prose">Most vendors will tell you about placement rates, coach credentials, and platform features. These questions go deeper. Listen for what they say — and what they don't.</p>
+
+          <ul class="q-list" style="margin-top:1.25rem;">
+            <li class="q-item">
+              <span class="q-num">01</span>
+              <div class="q-body">
+                <p class="q-text">What does your program look like in the first two weeks, before resume work begins?</p>
+                <p class="q-note">Listen for: acknowledgment of emotional transition, identity work, readiness assessment. Red flag: immediate pivot to resume and LinkedIn optimization.</p>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num">02</span>
+              <div class="q-body">
+                <p class="q-text">How do you assess where someone is emotionally before prescribing next steps?</p>
+                <p class="q-note">Listen for: intake conversations, coach discretion, flexibility. Red flag: one-size-fits-all timelines for everyone.</p>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num">03</span>
+              <div class="q-body">
+                <p class="q-text">What do you do when a client has strong credentials but isn't making progress?</p>
+                <p class="q-note">Listen for: identity exploration, root-cause thinking. Red flag: "We increase the volume of applications."</p>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num">04</span>
+              <div class="q-body">
+                <p class="q-text">How do you measure success beyond placement rate and time-to-employment?</p>
+                <p class="q-note">Listen for: confidence metrics, client-reported readiness, quality-of-fit. Red flag: blank stare.</p>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num">05</span>
+              <div class="q-body">
+                <p class="q-text">What does peer or cohort support look like in your model?</p>
+                <p class="q-note">Listen for: facilitated peer groups, shared experience structures. Red flag: "Our platform has discussion boards."</p>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num">06</span>
+              <div class="q-body">
+                <p class="q-text">What training do your coaches have in identity transition — not just job-search tactics?</p>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num">07</span>
+              <div class="q-body">
+                <p class="q-text">Can you describe what you do for clients who are grieving the future they thought they were building?</p>
+                <p class="q-note">A vendor who doesn't understand the question probably can't answer it.</p>
+              </div>
+            </li>
+          </ul>
+
+        </div>
+      </div>
+
+    </div><!-- /tool-grid -->
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- ── FOR CAREER COACHES ────────────────────────────────── -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="section-shell" id="for-coaches">
+  <div class="section-inner">
+    <div class="section-tag">For Career Coaches &amp; Practitioners</div>
+    <h2 class="section-title">When the Tools Aren't the Problem</h2>
+    <p class="section-intro">Sometimes a client has everything they need to search — and still isn't moving. These questions are for those conversations. They focus on identity and meaning, not tactics.</p>
+
+    <div class="tool-grid">
+
+      <!-- ── TOOL 03 ──────────────────────────────── -->
+      <div class="tool-card">
+        <div class="tool-card-head">
+          <div>
+            <p class="tool-id">Tool 03</p>
+            <h3>The Stuck Client Conversation</h3>
+            <p>Twelve questions for use when a client is prepared but not progressing — organized around the real work of identity transition.</p>
+          </div>
+          <a href="https://drive.google.com/file/d/1sgaRP0Px1XpcKfoy9bBFZ3j0McNWThfK/view?usp=drive_link" class="dl-btn" target="_blank">↓ PDF</a>
+        </div>
+        <div class="tool-card-body">
+
+          <p class="prose">Use these selectively, not as a script. The goal is to surface what's actually getting in the way — which is rarely a skills gap or a resume problem.</p>
+
+          <div class="tool-grid two-up" style="margin-top:1.5rem; gap:1.5rem;">
+            <div>
+              <p class="subhead">On Meaning</p>
+              <ul class="q-list">
+                <li class="q-item">
+                  <span class="q-num">01</span>
+                  <div class="q-body"><p class="q-text">What did that role mean to you — beyond the job description?</p></div>
+                </li>
+                <li class="q-item">
+                  <span class="q-num">02</span>
+                  <div class="q-body"><p class="q-text">What are you afraid this job loss says about you?</p></div>
+                </li>
+                <li class="q-item">
+                  <span class="q-num">03</span>
+                  <div class="q-body"><p class="q-text">What part of your professional identity feels most uncertain right now?</p></div>
+                </li>
+              </ul>
+
+              <p class="subhead" style="margin-top:1.5rem;">On Identity</p>
+              <ul class="q-list">
+                <li class="q-item">
+                  <span class="q-num">04</span>
+                  <div class="q-body"><p class="q-text">Who were you before this role? What parts of that person are still here?</p></div>
+                </li>
+                <li class="q-item">
+                  <span class="q-num">05</span>
+                  <div class="q-body"><p class="q-text">When you imagine introducing yourself professionally — without a title — what do you say?</p></div>
+                </li>
+                <li class="q-item">
+                  <span class="q-num">06</span>
+                  <div class="q-body"><p class="q-text">What have you learned about yourself in this period that you want to carry forward?</p></div>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <p class="subhead">On Readiness</p>
+              <ul class="q-list">
+                <li class="q-item">
+                  <span class="q-num">07</span>
+                  <div class="q-body"><p class="q-text">Is there a version of "next" that excites you — even quietly or partially?</p></div>
+                </li>
+                <li class="q-item">
+                  <span class="q-num">08</span>
+                  <div class="q-body"><p class="q-text">What would you have to believe about yourself to take the next step?</p></div>
+                </li>
+                <li class="q-item">
+                  <span class="q-num">09</span>
+                  <div class="q-body"><p class="q-text">What does "feeling like yourself again" look like to you?</p></div>
+                </li>
+              </ul>
+
+              <p class="subhead" style="margin-top:1.5rem;">On Movement</p>
+              <ul class="q-list">
+                <li class="q-item">
+                  <span class="q-num">10</span>
+                  <div class="q-body"><p class="q-text">What are you protecting by staying still?</p></div>
+                </li>
+                <li class="q-item">
+                  <span class="q-num">11</span>
+                  <div class="q-body"><p class="q-text">What's the smallest step that would feel honest rather than performative?</p></div>
+                </li>
+                <li class="q-item">
+                  <span class="q-num">12</span>
+                  <div class="q-body"><p class="q-text">What would make it okay to not have this figured out yet?</p></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="callout" style="margin-top:1.75rem;">
+            <p>"The goal of these questions isn't resolution — it's to help the client locate where they actually are, so the work you do together can meet them there."</p>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /tool-grid -->
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- ── FOR INDIVIDUALS ───────────────────────────────────── -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="section-shell alt" id="for-individuals">
+  <div class="section-inner">
+    <div class="section-tag">For Individuals in Transition</div>
+    <h2 class="section-title">Before You Open LinkedIn</h2>
+    <p class="section-intro">Job searching before you're ready is exhausting and often counterproductive. These two tools are for the days before the search begins — to help you understand where you are and what you're carrying.</p>
+
+    <div class="tool-grid two-up">
+
+      <!-- ── TOOL 04 ──────────────────────────────── -->
+      <div class="tool-card">
+        <div class="tool-card-head">
+          <div>
+            <p class="tool-id">Tool 04</p>
+            <h3>Before the Resume: A Reflection Guide</h3>
+            <p>Ten questions for the first week or two — about what the last role meant, not about your next one.</p>
+          </div>
+          <a href="https://drive.google.com/file/d/1z3Hjrfo6CtOK4LJmNMP5jbpO-VX2IFWc/view?usp=drive_link" class="dl-btn" target="_blank">↓ PDF</a>
+        </div>
+        <div class="tool-card-body">
+
+          <div class="callout">
+            <p>Set aside 30–60 minutes. Find somewhere quiet. Write your answers — even roughly — rather than just thinking through them. Writing slows things down in a useful way.</p>
+          </div>
+
+          <ul class="q-list" style="margin-top:0.5rem;">
+            <li class="q-item"><span class="q-num">01</span><div class="q-body"><p class="q-text">What did this role mean to you?</p></div></li>
+            <li class="q-item"><span class="q-num">02</span><div class="q-body"><p class="q-text">What will you miss about it?</p></div></li>
+            <li class="q-item"><span class="q-num">03</span><div class="q-body"><p class="q-text">What are you relieved to leave behind?</p></div></li>
+            <li class="q-item"><span class="q-num">04</span><div class="q-body"><p class="q-text">What did you learn about yourself while in this role?</p></div></li>
+            <li class="q-item"><span class="q-num">05</span><div class="q-body"><p class="q-text">What parts of the work energized you? What drained you?</p></div></li>
+            <li class="q-item"><span class="q-num">06</span><div class="q-body"><p class="q-text">What do you want to carry forward into the next chapter?</p></div></li>
+            <li class="q-item"><span class="q-num">07</span><div class="q-body"><p class="q-text">Who were you before this role? What parts of that person are still true?</p></div></li>
+            <li class="q-item"><span class="q-num">08</span><div class="q-body"><p class="q-text">What would you want people to say about your work — not your title?</p></div></li>
+            <li class="q-item"><span class="q-num">09</span><div class="q-body"><p class="q-text">If you could design the next role with no constraints, what would matter most?</p></div></li>
+            <li class="q-item"><span class="q-num">10</span><div class="q-body"><p class="q-text">What does "doing well" look like to you — not as a professional, but as a person?</p></div></li>
+          </ul>
+
+        </div>
+      </div>
+
+      <!-- ── TOOL 05 ──────────────────────────────── -->
+      <div class="tool-card">
+        <div class="tool-card-head">
+          <div>
+            <p class="tool-id">Tool 05</p>
+            <h3>Transition Readiness Self-Assessment</h3>
+            <p>A short, honest gauge of where you are — not where you think you should be.</p>
+          </div>
+          <a href="https://drive.google.com/file/d/1UP4S-JK4OnGezWpRglXZ1fehX0QTH1E7/view?usp=drive_link" class="dl-btn" target="_blank">↓ PDF</a>
+        </div>
+        <div class="tool-card-body">
+
+          <p class="prose">Answer these as honestly as you can. This isn't a test — it's a map. Knowing where you are helps you use the time and support available to you well.</p>
+
+          <ul class="q-list" style="margin-top:1rem;">
+            <li class="q-item">
+              <span class="q-num">01</span>
+              <div class="q-body">
+                <p class="q-text">When you imagine starting a job search this week, what's your first feeling?</p>
+                <p class="q-note">Relief and readiness are different from dread, numbness, or going through the motions.</p>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num">02</span>
+              <div class="q-body">
+                <p class="q-text">Can you describe what you're looking for — not just in a role, but in how you want to work and feel?</p>
+                <p class="q-note">If the answer is "I just need a job," that's worth sitting with.</p>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num">03</span>
+              <div class="q-body">
+                <p class="q-text">Do you feel like the same person who held your last role, or is something still shifting?</p>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num">04</span>
+              <div class="q-body">
+                <p class="q-text">When you think about telling your professional story, does it feel true?</p>
+                <p class="q-note">Or does it feel like something you're performing?</p>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num">05</span>
+              <div class="q-body">
+                <p class="q-text">On a scale of 1–10, how much energy do you have for the sustained work of job searching?</p>
+                <p class="q-note">Below a 6 or 7 isn't failure — it's information.</p>
+              </div>
+            </li>
+            <li class="q-item">
+              <span class="q-num">06</span>
+              <div class="q-body">
+                <p class="q-text">Are you staying busy to avoid feeling something?</p>
+              </div>
+            </li>
+          </ul>
+
+          <div class="callout" style="margin-top:1.5rem;">
+            <p>If most of your answers point to uncertainty, numbness, or avoidance — you may still be in the transition gap. That's not a problem. It's information. The gap is where the real preparation happens.</p>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /tool-grid -->
+  </div>
+</div>
+
+<!-- ── ABOUT ──────────────────────────────────────────────── -->
+<div id="about">
+  <div class="about-block">
+    <h2>About This Kit</h2>
+    <p>This practitioner kit was developed as a companion to the article <em>"Outplacement Is a Human Problem Before It Is a Hiring Problem,"</em> published in <em>HRMOutlook</em>. It is designed for use the same day — no training required, no platform to log into.</p>
+    <p>The resources here are grounded in years of work with adult learners, career changers, and professionals navigating workforce transition. They are informed by research on professional identity — particularly Herminia Ibarra's work on how people navigate career change.</p>
+    <p>These tools may be shared freely with individuals in transition and used by practitioners in their work. If you adapt them for an organizational program, attribution is appreciated.</p>
+    <p><strong>[Your name · Credentials · Website or contact]</strong></p>
+  </div>
+</div>
+
+<!-- ── FOOTER ─────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <p>The Transition Gap · Practitioner Kit</p>
+    <a href="[ARTICLE LINK]" target="_blank">↗ Read the Full Article at HRMOutlook</a>
+  </div>
+</footer>
+
+</body>
+</html>
